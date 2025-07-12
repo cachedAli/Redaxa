@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 export default function NavLink({
   href,
   label,
+  onClick
 }: {
   href: string;
   label: string;
+  onClick?: ()=>void
 }) {
   const pathname = usePathname();
   const isActive = pathname === href;
@@ -19,7 +21,7 @@ export default function NavLink({
         isActive ? "text-blue-500" : "text-blue-900 hover:text-teal-500"
       }`}
     >
-      <Link href={href}>{label}</Link>
+      <Link href={href} onClick={onClick}>{label}</Link>
     </li>
   );
 }
