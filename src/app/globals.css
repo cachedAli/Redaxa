@@ -120,3 +120,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes slide-mask {
+  0%,
+  100% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-slide-mask {
+  animation: slide-mask 3s ease-in-out infinite;
+}
+
+@keyframes slide-toggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(12px);
+  }
+}
+
+.animate-slide-toggle {
+  animation: slide-toggle 3s ease-in-out infinite;
+}

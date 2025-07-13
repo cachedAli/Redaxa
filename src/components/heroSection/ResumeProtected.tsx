@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-export default function ResumePortrait() {
+export default function ResumeProtected() {
   return (
     <div
       className={clsx(
@@ -48,7 +48,7 @@ export default function ResumePortrait() {
           {/* Job 1 */}
           <div className="mb-2">
             <div className="flex justify-between items-start mb-1">
-              <div className="h-3 bg-blue-800 rounded w-2/3 shadow-sm"></div>
+              <div className="h-3 bg-blue-900 rounded w-2/3 shadow-sm"></div>
               <div className="h-2 bg-blue-900 rounded w-1/4 shadow-sm"></div>
             </div>
             <div className="h-2 bg-blue-900 rounded w-1/2 mb-1 shadow-sm"></div>
@@ -88,7 +88,7 @@ export default function ResumePortrait() {
             Education
           </h3>
           <div className="flex justify-between items-start mb-1">
-            <div className="h-3 bg-blue-800 rounded w-2/3 shadow-sm"></div>
+            <div className="h-3 bg-blue-900 rounded w-2/3 shadow-sm"></div>
             <div className="h-2 bg-blue-900 rounded w-1/5 shadow-sm"></div>
           </div>
           <div className="h-2 bg-blue-900 rounded w-1/3 shadow-sm"></div>
