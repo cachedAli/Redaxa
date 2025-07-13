@@ -121,6 +121,10 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @keyframes slide-mask {
   0%,
   100% {

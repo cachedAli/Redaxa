@@ -14,7 +14,7 @@ export const privacyInfo = [
         label: "DATA SECURITY",
         key: "dataSecurity",
         heading: "Your Data Stays in Your Hands",
-        description: "Your resume is only stored if you're logged in. Until then, all processing happens locally in your browser, keeping your data private and fully under your control.",
+        description: "Your resume is only stored if you're logged in and choose to save it. Until then, all processing happens locally in your browser, keeping your data private and fully under your control.",
         illustration: DataSecurity
     },
     {
