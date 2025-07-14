@@ -1,3 +1,4 @@
+import CtaSection from "@/components/CtaSection";
 import { Features } from "@/components/features";
 import { HeroSection } from "@/components/heroSection";
 import { PrivacyMatters } from "@/components/whyPrivacyMatters";
@@ -7,7 +8,8 @@ export default function Home() {
     <div className="">
       <HeroSection />
       <PrivacyMatters />
-      <Features/>
+      <Features />
+      <CtaSection />
     </div>
   );
 }

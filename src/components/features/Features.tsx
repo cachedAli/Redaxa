@@ -1,10 +1,13 @@
 import clsx from "clsx";
 import React from "react";
 import FeatureList from "./FeatureList";
+import Waves from "../ui/Waves";
 
 export default function Features() {
   return (
-    <section
+
+    <section className="relative">
+    <div
       id="features"
       className="pt-12 pb-52 h-full flex flex-col items-center"
     >
@@ -23,6 +26,8 @@ export default function Features() {
       </div>
 
       <FeatureList />
+    </div>
+    <Waves color="grad"/>
     </section>
   );
 }
