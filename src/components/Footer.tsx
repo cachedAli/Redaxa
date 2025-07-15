@@ -32,7 +32,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Copyright */}
-      <div className="mt-12 text-center text-sm border-t border-blue-900 pt-10">
+      <div className="mt-12 text-center text-sm border-t border-neutral-400 pt-10">
         © {new Date().getFullYear()} Redaxa. All rights reserved.
       </div>
     </footer>

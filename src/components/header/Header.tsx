@@ -1,10 +1,12 @@
 import React from "react";
 import clsx from "clsx";
 
+import { SessionProvider } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 import MobileNavigation from "./MobileNavigation";
+import AuthButtons from "../ui/auth/AuthButtons";
 import { Button } from "@/components/ui/button";
 import NavLink from "./Navlink";
 
@@ -22,16 +24,18 @@ export default function Header() {
           <Image
             src="/redaxaLogo.png"
             alt="Redaxa"
-            width={150}
-            height={150}
-            className={clsx("h-auto w-32", "max-md:w-28", "max-sm:w-24")}
+            width={120}
+            height={40}
+            className={clsx("object-contain", "max-md:w-28", "max-sm:w-24")}
+            priority
           />
         </Link>
 
         <Navigation />
-        <MobileNavigation />
-
-        <Buttons />
+        <SessionProvider>
+          <MobileNavigation />
+          <Buttons />
+        </SessionProvider>
       </div>
     </header>
   );
@@ -74,16 +78,7 @@ const Buttons = () => {
           Upload
         </Button>
       </Link>
-
-      <Link href="/login">
-        <Button
-          size="lg"
-          variant="secondary"
-          className="max-sm:h-8 max-sm:gap-1.5 max-sm:px-3 max-[370px]:text-xs"
-        >
-          Login
-        </Button>
-      </Link>
+      <AuthButtons />
     </div>
   );
 };

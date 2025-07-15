@@ -1,33 +1,29 @@
-import clsx from "clsx";
 import React from "react";
+import clsx from "clsx";
+
+import SectionHeader from "../ui/SectionHeader";
 import FeatureList from "./FeatureList";
 import Waves from "../ui/Waves";
 
 export default function Features() {
   return (
-
-    <section className="relative">
-    <div
-      id="features"
-      className="pt-12 pb-52 h-full flex flex-col items-center"
-    >
+    <section id="features" className="relative">
       <div
         className={clsx(
-          "flex flex-col text-center gap-8 text-blue-900 px-28",
-          "max-sm:px-12"
+          "pt-12 pb-52 h-full flex flex-col items-center",
+          "max-sm:pb-24"
         )}
       >
-        <h2 className="text-4xl font-semibold">What You Can Do with Redaxa</h2>
+        <SectionHeader
+          title="What You Can Do with Redaxa"
+          description="Use Redaxa once or make it part of your workflow. Get instant results
+          without signing up, and unlock more control when you log in."
+          textColor="blue"
+        />
 
-        <p className="text-xl leading-8">
-          Use Redaxa once or make it part of your workflow. Get instant results
-          without signing up, and unlock more control when you log in.
-        </p>
+        <FeatureList />
       </div>
-
-      <FeatureList />
-    </div>
-    <Waves color="grad"/>
+      <Waves color="grad" />
     </section>
   );
 }

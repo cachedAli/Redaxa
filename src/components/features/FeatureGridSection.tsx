@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import clsx from "clsx";
 
@@ -41,7 +39,7 @@ const FeatureBadge = ({ variant = "free" }) => {
   );
 
   const title = isFree ? "Free Features" : "Advanced Features";
-  const label = isFree ? "No Account Needed" : "Login Required";
+  const label = isFree ? "No Account Needed" : "Account Required";
 
   return (
     <div className="text-center mb-12 mt-12">

@@ -10,8 +10,9 @@ export default function HeroSection() {
     <section className="relative">
       <div
         className={clsx(
-          "pt-16 pb-40 px-12 flex items-center justify-between w-full bg-gradient-to-r from-blue-900 via-violet-800 to-blue-900",
-          "max-lg:flex-col max-lg:text-center max-lg:pt-28"
+          "pt-16 pb-40 px-12 flex items-center justify-between w-full bg-gradient-main",
+          "max-lg:flex-col max-lg:text-center max-lg:pt-28",
+          "max-sm:pb-24"
         )}
       >
         <div
@@ -26,7 +27,7 @@ export default function HeroSection() {
             Redaxa makes it simple to hide sensitive details and share a
             polished version of your resume.
           </p>
-          <Upload />
+          <Upload animateOnView={false} />
         </div>
 
         <ResumeProtected />
@@ -35,4 +36,3 @@ export default function HeroSection() {
     </section>
   );
 }
-

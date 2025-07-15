@@ -1,9 +1,15 @@
+"use client";
+
 import clsx from "clsx";
 
 import { FilePlus2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { motion } from "framer-motion";
 
-export const Upload = () => {
+export const Upload = ({
+  animateOnView = true,
+}: {
+  animateOnView?: boolean;
+}) => {
   return (
     <div
       className={clsx(
@@ -11,11 +17,26 @@ export const Upload = () => {
         "max-lg:w-full max-lg:items-center"
       )}
     >
-      <Button size="lg" className="h-12 w-60 rounded-xl shadow-lg">
-        <FilePlus2 size={20} /> Upload Your Resume
-      </Button>
+      <motion.button
+        initial={animateOnView ? { opacity: 0, y: 40 } : {}}
+        whileInView={animateOnView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+        className="h-12 w-60 rounded-xl shadow-lg bg-indigo-500 hover:bg-blue-500 text-white flex items-center justify-center gap-2 cursor-pointer transition-colors duration-300"
+      >
+        <FilePlus2 size={20} />
+        Upload Your Resume
+      </motion.button>
 
-      <p className="text-center text-gray-100">or drag and drop your resume</p>
+      <motion.p
+        initial={animateOnView ? { opacity: 0, y: 40 } : {}}
+        whileInView={animateOnView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        viewport={{ once: true }}
+        className="text-center text-gray-100"
+      >
+        or drag and drop your resume
+      </motion.p>
     </div>
   );
 };

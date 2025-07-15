@@ -1,11 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
+import clsx from "clsx";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
 import { Menu, X } from "lucide-react";
 
+import { useSession } from "next-auth/react";
+import AuthForm from "../ui/auth/AuthForm";
+import { Button } from "../ui/button";
 import NavLink from "./Navlink";
+import { useShallow } from "zustand/react/shallow";
+import { useLoadingStore } from "../store/loadingStore";
+import Spinner from "../ui/Spinner";
 
 export default function MobileNavigation() {
   const [show, setShow] = useState(false);
@@ -60,7 +68,49 @@ const Navigation = ({
             onClick={() => setShow(false)}
           />
         ))}
+
+        <AuthButtons />
       </ul>
     </motion.nav>
+  );
+};
+
+const AuthButtons = () => {
+  const { data: session, status } = useSession();
+
+  const { googleLoading, logoutLoading } = useLoadingStore(
+    useShallow((state) => ({
+      googleLoading: state.googleLoading,
+      logoutLoading: state.logoutLoading,
+    }))
+  );
+
+  const isLoggingIn = googleLoading || status === "loading";
+  const isLoggingOut = logoutLoading || status === "loading";
+  
+  return (
+    <AuthForm session={session}>
+      {session ? (
+        <Button type="submit" size="lg" className="w-full">
+          {isLoggingOut ? <Spinner size="md" /> : "Logout"}
+        </Button>
+      ) : (
+        <Button
+          type="submit"
+          size="lg"
+          variant="secondary"
+          className={clsx("w-full")}
+        >
+          {isLoggingIn ? (
+            <Spinner size="md" />
+          ) : (
+            <>
+              <FcGoogle size={20} />
+              Sign in with Google
+            </>
+          )}
+        </Button>
+      )}
+    </AuthForm>
   );
 };
