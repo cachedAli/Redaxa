@@ -1,11 +1,11 @@
+import { PrivacyMatters } from "@/components/whyPrivacyMatters";
+import { HeroSection } from "@/components/heroSection";
 import CtaSection from "@/components/CtaSection";
 import { Features } from "@/components/features";
-import { HeroSection } from "@/components/heroSection";
-import { PrivacyMatters } from "@/components/whyPrivacyMatters";
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       <HeroSection />
       <PrivacyMatters />
       <Features />

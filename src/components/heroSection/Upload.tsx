@@ -7,8 +7,10 @@ import { motion } from "framer-motion";
 
 export const Upload = ({
   animateOnView = true,
+  history = false,
 }: {
   animateOnView?: boolean;
+  history?: boolean;
 }) => {
   return (
     <div
@@ -22,10 +24,13 @@ export const Upload = ({
         whileInView={animateOnView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="h-12 w-60 rounded-xl shadow-lg bg-indigo-500 hover:bg-blue-500 text-white flex items-center justify-center gap-2 cursor-pointer transition-colors duration-300"
+        className={clsx(
+          "h-12 rounded-xl shadow-lg bg-indigo-500 hover:bg-blue-500 text-white flex items-center justify-center gap-2 cursor-pointer transition-colors duration-300",
+          history ? "w-64" : "w-60"
+        )}
       >
         <FilePlus2 size={20} />
-        Upload Your Resume
+        {history ? "Redact Your First Resume" : "Upload Your Resume"}
       </motion.button>
 
       <motion.p

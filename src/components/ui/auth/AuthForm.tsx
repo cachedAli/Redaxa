@@ -6,6 +6,7 @@ import { useLoadingStore } from "@/components/store/loadingStore";
 import { signIn, signOut } from "next-auth/react";
 import { useShallow } from "zustand/react/shallow";
 import { Session } from "next-auth";
+import clsx from "clsx";
 
 type AuthFormProps = {
   children: React.ReactNode;
@@ -26,7 +27,10 @@ export default function AuthForm({
 
   return (
     <form
-      className="w-full"
+      className={clsx(
+        "w-full",
+        isHistory && " flex items-center justify-center"
+      )}
       action={async () => {
         setGoogleLoading(true), setLogoutLoading(true);
 

@@ -11,9 +11,10 @@ import { FaGoogle } from "react-icons/fa";
 import { Session } from "next-auth";
 import Image from "next/image";
 
+import { useLoadingStore } from "@/components/store/loadingStore";
+import { destructureName } from "@/lib/utils";
 import { Button } from "../button";
 import AuthForm from "./AuthForm";
-import { useLoadingStore } from "@/components/store/loadingStore";
 import Spinner from "../Spinner";
 
 export default function AuthButtons({
@@ -33,35 +34,33 @@ export default function AuthButtons({
     <AuthForm session={session} isHistory={isHistory}>
       {session ? (
         <>
-          <div className="relative flex gap-3 items-center text-blue-900">
-            <UserInfo session={session} fallbackAvatar={fallbackAvatar} />
+          {!isHistory && (
+            <div className="relative flex gap-3 items-center text-blue-900">
+              <UserInfo session={session} fallbackAvatar={fallbackAvatar} />
 
-            <LogoutModal />
-          </div>
+              <LogoutModal session={session} />
+            </div>
+          )}
         </>
       ) : (
         <Button
           type="submit"
           size="lg"
-          disabled={googleLoading}
-          variant="secondary"
+          disabled={isLoggingIn}
+          variant={isHistory ? "default" : "secondary"}
           className={clsx(
-            "w-[114px]",
-            "max-sm:h-8 max-sm:gap-1.5 max-sm:px-3 max-[370px]:text-xs",
-            "max-md:hidden"
+            isHistory
+              ? "w-60 text-white shadow-lg"
+              : "w-[114px] max-md:hidden max-sm:h-8 max-sm:gap-1.5 max-sm:px-3 max-[370px]:text-xs"
           )}
         >
-          {!isHistory ? (
-            isLoggingIn ? (
-              <Spinner size="md" />
-            ) : (
-              <>
-                <FcGoogle size={20} />
-                Google
-              </>
-            )
-          ) : googleLoading ? (
+          {googleLoading ? (
             <Spinner size="md" />
+          ) : !isHistory ? (
+            <>
+              <FcGoogle size={20} />
+              Google
+            </>
           ) : (
             <>
               <FaGoogle size={20} />
@@ -81,6 +80,8 @@ const UserInfo = ({
   session: Session;
   fallbackAvatar: string;
 }) => {
+  const { firstName } = destructureName(session?.user?.name);
+
   return (
     <>
       <Image
@@ -88,17 +89,18 @@ const UserInfo = ({
         alt=""
         width={36}
         height={36}
-        className="rounded-full border border-gray-200 max-sm:size-8"
+        className="rounded-full border border-gray-200  max-md:hidden"
       />
-      <span className="font-medium max-sm:text-sm">{session?.user?.name}</span>
+      <span className="font-medium max-md:hidden">{firstName}</span>
     </>
   );
 };
 
-const LogoutModal = () => {
+const LogoutModal = ({ session }: { session: Session }) => {
   const [showLogout, setShowLogout] = useState(false);
   const logoutLoading = useLoadingStore((state) => state.logoutLoading);
   const isLoggingOut = logoutLoading || status === "loading";
+  const { fullName } = destructureName(session?.user?.name);
 
   return (
     <div className="max-md:hidden">
@@ -114,13 +116,19 @@ const LogoutModal = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute p-6 shadow-lg bg-blue-50 top-14 -right-4 rounded-xl"
+            className={clsx(
+              "absolute flex flex-col items-center h-auto gap-2 w-48 p-6 shadow-lg bg-blue-50 top-14 -right-4 rounded-xl"
+            )}
           >
+            <span className="text-lg text-blue-900 font-medium">
+              {fullName}
+            </span>
+
             <Button
               type="submit"
               size="lg"
-              disabled={logoutLoading}
-              className="max-sm:h-8 max-sm:gap-1.5 max-sm:px-3 max-[370px]:text-xs w-[100px]"
+              disabled={isLoggingOut}
+              className="max-sm:h-8 max-sm:gap-1.5 max-sm:px-3 max-[370px]:text-xs w-[140px]"
             >
               {isLoggingOut ? <Spinner size="md" /> : "Logout"}
             </Button>

@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 
-import { SessionProvider } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,7 +23,7 @@ export default function Header() {
           <Image
             src="/redaxaLogo.png"
             alt="Redaxa"
-            width={120}
+            width={100}
             height={40}
             className={clsx("object-contain", "max-md:w-28", "max-sm:w-24")}
             priority
@@ -32,10 +31,8 @@ export default function Header() {
         </Link>
 
         <Navigation />
-        <SessionProvider>
-          <MobileNavigation />
-          <Buttons />
-        </SessionProvider>
+        <MobileNavigation />
+        <Buttons />
       </div>
     </header>
   );

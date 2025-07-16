@@ -9,12 +9,14 @@ type SectionHeaderProps = {
   title: string;
   description: string;
   textColor?: "blue" | "white";
+  animation?: boolean;
 };
 
 export default function SectionHeader({
   title,
   description,
   textColor = "white",
+  animation = true,
 }: SectionHeaderProps) {
   return (
     <div
@@ -25,20 +27,22 @@ export default function SectionHeader({
       )}
     >
       <motion.h2
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true }}
+        initial={animation ? { opacity: 0, y: 40 } : {}}
+        whileInView={animation ? { opacity: 1, y: 0 } : {}}
+        transition={animation ? { duration: 0.6, ease: "easeOut" } : {}}
+        viewport={animation ? { once: true } : {}}
         className="text-4xl font-semibold"
       >
         {title}
       </motion.h2>
 
       <motion.p
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-        viewport={{ once: true }}
+        initial={animation ? { opacity: 0, y: 40 } : {}}
+        whileInView={animation ? { opacity: 1, y: 0 } : {}}
+        transition={
+          animation ? { duration: 0.8, ease: "easeOut", delay: 0.2 } : {}
+        }
+        viewport={animation ? { once: true } : {}}
         className="text-xl leading-8"
       >
         {description}
