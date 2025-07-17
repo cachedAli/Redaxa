@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import MobileNavigation from "./MobileNavigation";
 import AuthButtons from "../ui/auth/AuthButtons";
-import { Button } from "@/components/ui/button";
+import UploadButton from "./UploadButton";
 import NavLink from "./Navlink";
 
 export default function Header() {
@@ -14,7 +14,7 @@ export default function Header() {
     <header className="fixed top-0 w-full z-50">
       <div
         className={clsx(
-          "relative mx-10 flex items-center justify-between p-4 rounded-b-2xl bg-blue-50",
+          "relative mx-10 shadow-md flex items-center justify-between p-4 rounded-b-2xl bg-blue-50",
           "max-sm:mx-4"
         )}
       >
@@ -67,14 +67,7 @@ const Navigation = () => {
 const Buttons = () => {
   return (
     <div className="flex items-center gap-2 max-md:order-3">
-      <Link href="/upload">
-        <Button
-          size="lg"
-          className="max-sm:h-8 max-sm:gap-1.5 max-sm:px-3 max-[370px]:text-xs"
-        >
-          Upload
-        </Button>
-      </Link>
+      <UploadButton />
       <AuthButtons />
     </div>
   );

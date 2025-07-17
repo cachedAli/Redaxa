@@ -10,7 +10,7 @@ export default function Features() {
     <section id="features" className="relative">
       <div
         className={clsx(
-          "pt-12 pb-52 h-full flex flex-col items-center",
+          "pt-12 pb-52 h-full flex flex-col items-center bg-blue-50",
           "max-sm:pb-24"
         )}
       >

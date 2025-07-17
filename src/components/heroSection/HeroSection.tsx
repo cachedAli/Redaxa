@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 
 import ResumeProtected from "./ResumeProtected";
-import { Upload } from "./Upload";
+import { Upload } from "../ui/Upload";
 import Waves from "../ui/Waves";
 
 export default function HeroSection() {

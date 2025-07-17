@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
-import { FileText } from 'lucide-react'
+import { FileText } from "lucide-react";
 
-import { Upload } from '@/components/heroSection/Upload'
-import SectionHeader from '@/components/ui/SectionHeader'
-import IconBox from '@/components/ui/IconBox'
+import { Upload } from "@/components/ui/Upload";
+import SectionHeader from "@/components/ui/SectionHeader";
+import IconBox from "@/components/ui/IconBox";
 
 export default function LoggedInHistory() {
   return (
@@ -17,7 +17,7 @@ export default function LoggedInHistory() {
         animation={false}
       />
 
-      <Upload animateOnView={false} history/>
+      <Upload animateOnView={false} history />
     </div>
-  )
+  );
 }
