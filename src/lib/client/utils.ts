@@ -16,3 +16,4 @@ export const destructureName = (name: string | null | undefined) => {
 
   return { firstName, lastName, fullName }
 }
+

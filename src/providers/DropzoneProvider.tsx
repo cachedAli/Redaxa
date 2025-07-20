@@ -34,17 +34,25 @@ export default function DropzoneProvider({
         const newFile = acceptedFiles[0];
         if (newFile) {
           setFile(URL.createObjectURL(newFile));
-
           const formData = new FormData();
           formData.append("file", newFile);
 
           axios
-            .post("/api/redact-resume", formData)
+            .post("/api/redact-resume", formData, {
+              responseType: "blob",
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
             .then((response) => {
-              console.log("axios ", response);
+              const pdfBlob = new Blob([response.data], {
+                type: "application/pdf",
+              });
+              const pdfUrl = URL.createObjectURL(pdfBlob);
+              setFile(pdfUrl);
             })
             .catch((error) => {
-              console.log(error);
+              console.log("Error uploading or processing PDF:", error);
             });
 
           if (pathname !== "/upload") {

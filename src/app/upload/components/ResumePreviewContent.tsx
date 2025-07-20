@@ -16,11 +16,10 @@ export default function ResumePreviewContent() {
 
   return (
     <Document file={file} loading={<Spinner size="lg" />}>
-      <div className="rounded-2xl overflow-hidden inline-block">
+      <div className="rounded-2xl overflow-hidden w-full">
         <Page
           pageNumber={1}
-          width={300}
-          height={100}
+          width={400}
           renderTextLayer={false}
           renderAnnotationLayer={false}
         />

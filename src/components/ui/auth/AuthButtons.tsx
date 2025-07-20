@@ -12,7 +12,7 @@ import { Session } from "next-auth";
 import Image from "next/image";
 
 import { useLoadingStore } from "@/components/store/loadingStore";
-import { destructureName } from "@/lib/utils";
+import { destructureName } from "@/lib/client/utils";
 import { Button } from "../button";
 import AuthForm from "./AuthForm";
 import Spinner from "../Spinner";
