@@ -162,3 +162,6 @@ html {
   animation: slide-toggle 3s ease-in-out infinite;
 }
 
+.textLayer *::selection {
+  background: rgba(0, 102, 255, 0.34);
+}

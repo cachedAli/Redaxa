@@ -1,3 +1,4 @@
+import { UTApi } from "uploadthing/server"
 import { NextRequest } from "next/server";
 import { Readable } from "stream";
 
@@ -53,7 +54,10 @@ ${text}
 `;
 };
 
-export const noResumeMsg = "No sensitive personal information found. This does not appear to be a resume or personal document."
+
+export const noResumeMsg =
+    "We couldn’t find any personal info to redact. Please upload a valid resume PDF.";
+
 
 export const cleanSocialLinks = (text: string): string => {
     return text.replace(/(linkedin\.com|github\.com|twitter\.com|x\.com|facebook\.com|instagram\.com|t\.me)[\s\/\w.-]*/gi, (match) =>
@@ -61,4 +65,19 @@ export const cleanSocialLinks = (text: string): string => {
     );
 };
 
+export async function deleteOldFiles() {
+
+    const utapi = new UTApi();
+
+    const { files } = await utapi.listFiles();
+    const now = Date.now()
+
+    for (const file of files) {
+        const age = now - file.uploadedAt
+
+        if (age > 24 * 60 * 60 * 1000) {
+            await utapi.deleteFiles(file.key);
+        }
+    }
+}
 

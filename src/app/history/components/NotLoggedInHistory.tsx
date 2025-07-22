@@ -8,7 +8,7 @@ import IconBox from "@/components/ui/IconBox";
 
 export default function NotLoggedInHistory() {
   return (
-    <div className="flex py-32 flex-col w-full items-center justify-center gap-8 bg-gradient-main">
+    <main className="flex py-32 flex-col w-full items-center justify-center gap-8 bg-gradient-main">
       <IconBox icon={History} />
 
       <SectionHeader
@@ -18,6 +18,6 @@ export default function NotLoggedInHistory() {
         animation={false}
       />
       <AuthButtons isHistory />
-    </div>
+    </main>
   );
 }

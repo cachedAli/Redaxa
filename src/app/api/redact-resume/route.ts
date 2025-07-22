@@ -1,9 +1,9 @@
+import { extractSensitiveInfoPrompt, noResumeMsg, toNodeRequest } from "@/lib/server/utils";
+import { redactSensitiveInfo } from "@/lib/server/redactSensitiveInfo";
+import { extractTextFromPDF } from "@/lib/server/pdfToText";
 import { NextRequest, NextResponse } from "next/server";
 import { parseForm } from "@/lib/server/formidable";
-import { extractTextFromPDF } from "@/lib/server/pdfToText";
 import { geminiModel } from "@/lib/server/gemini";
-import { extractSensitiveInfoPrompt, toNodeRequest } from "@/lib/server/utils";
-import { redactSensitiveInfo } from "@/lib/server/redactSensitiveInfo";
 
 export const config = {
   api: {
@@ -28,20 +28,23 @@ export const POST = async (req: NextRequest) => {
 
     const response = geminiModel.generateContent(prompt)
     const message = (await response).response.text()
-    
-    const parsedArray = JSON.parse(message);
-
-    const pdfBytes = await redactSensitiveInfo(pdfFile.filepath, parsedArray)
 
     console.log(message)
+    if (message.trim() !== noResumeMsg) {
 
+      const parsedArray = JSON.parse(message);
 
-    return new NextResponse(pdfBytes, {
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename="redacted.pdf`
-      }
-    });
+      const pdfBytes = await redactSensitiveInfo(pdfFile.filepath, parsedArray)
+
+      return new NextResponse(pdfBytes, {
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `inline; filename="redacted.pdf`
+        }
+      });
+    } else {
+      return NextResponse.json({ message })
+    }
   } catch (error) {
     console.error("Error extracting text from PDF:", error);
     return NextResponse.json({ error: String(error) }, { status: 500 });

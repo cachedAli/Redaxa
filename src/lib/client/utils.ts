@@ -17,3 +17,8 @@ export const destructureName = (name: string | null | undefined) => {
   return { firstName, lastName, fullName }
 }
 
+export async function urlToArrayBuffer(url: string) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return await blob.arrayBuffer();
+  }

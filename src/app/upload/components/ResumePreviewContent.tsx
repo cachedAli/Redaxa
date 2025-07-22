@@ -2,9 +2,12 @@
 
 import React from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import { useShallow } from "zustand/react/shallow";
 
 import { useUploadStore } from "@/components/store/uploadStore";
 import Spinner from "@/components/ui/Spinner";
+import "react-pdf/dist/Page/TextLayer.css";
+import "../../globals.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -12,15 +15,20 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 export default function ResumePreviewContent() {
-  const file = useUploadStore((state) => state.file);
+  const { file, manualRedactMode } = useUploadStore(
+    useShallow((state) => ({
+      file: state.file,
+      manualRedactMode: state.manualRedactMode,
+    }))
+  );
 
   return (
-    <Document file={file} loading={<Spinner size="lg" />}>
+    <Document key={file} file={file} loading={<Spinner size="lg" />}>
       <div className="rounded-2xl overflow-hidden w-full">
         <Page
           pageNumber={1}
-          width={400}
-          renderTextLayer={false}
+          width={500}
+          renderTextLayer={manualRedactMode ? true : false}
           renderAnnotationLayer={false}
         />
       </div>
