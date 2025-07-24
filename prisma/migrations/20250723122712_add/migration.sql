@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "history_records" ADD COLUMN     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

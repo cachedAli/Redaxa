@@ -1,6 +1,8 @@
 import { UTApi } from "uploadthing/server"
 import { NextRequest } from "next/server";
 import { Readable } from "stream";
+import { geminiModel } from "./gemini";
+import { supabase } from "../client/supabaseClient";
 
 
 export const toNodeRequest = (req: NextRequest) => {
@@ -81,3 +83,46 @@ export async function deleteOldFiles() {
     }
 }
 
+// GeminiHelpers
+export const handleGeminiResponse = async (text: string) => {
+    const prompt = extractSensitiveInfoPrompt(text);
+    const response = await geminiModel.generateContent(prompt);
+    const message = response.response.text().trim();
+
+    if (message === noResumeMsg) {
+        throw new Error("NO_PERSONAL_INFO_FOUND");
+    }
+
+    return JSON.parse(message);
+};
+
+export const isGeminiRateLimitError = (err: any) => {
+    const message = err?.message?.toLowerCase() || "";
+    return message.includes("quota") || message.includes("rate limit") || message.includes("exceeded");
+};
+
+export const isGeminiOverloadError = (err: any) => {
+    const message = err?.message?.toLowerCase() || "";
+    return message.includes("unavailable") || message.includes("overload") || message.includes("too many requests");
+};
+
+
+// storageHelpers
+export const uploadToSupabase = async (userId: string, filename: string | null, originalBuffer: Buffer, redactedBuffer: Uint8Array) => {
+    const baseName = filename?.replace(/\.pdf$/i, "");
+    const filePath = `resumes/${userId}/${filename}`;
+    const redactedPath = `redactedResumes/${userId}/${baseName}_redacted.pdf`;
+
+    const [originalRes, redactedRes] = await Promise.all([
+        supabase.storage.from("resumes").upload(filePath, originalBuffer, { contentType: "application/pdf", upsert: true }),
+        supabase.storage.from("resumes").upload(redactedPath, redactedBuffer, { contentType: "application/pdf", upsert: true })
+    ]);
+
+    if (originalRes.error) throw new Error(originalRes.error.message);
+    if (redactedRes.error) throw new Error(redactedRes.error.message);
+
+    const originalUrl = supabase.storage.from("resumes").getPublicUrl(filePath).data.publicUrl;
+    const redactedUrl = supabase.storage.from("resumes").getPublicUrl(redactedPath).data.publicUrl;
+
+    return { originalUrl, redactedUrl };
+};

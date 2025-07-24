@@ -1,9 +1,12 @@
-import { extractSensitiveInfoPrompt, noResumeMsg, toNodeRequest } from "@/lib/server/utils";
+import { handleGeminiResponse, isGeminiOverloadError, isGeminiRateLimitError, noResumeMsg, toNodeRequest, uploadToSupabase } from "@/lib/server/utils";
 import { redactSensitiveInfo } from "@/lib/server/redactSensitiveInfo";
 import { extractTextFromPDF } from "@/lib/server/pdfToText";
 import { NextRequest, NextResponse } from "next/server";
 import { parseForm } from "@/lib/server/formidable";
-import { geminiModel } from "@/lib/server/gemini";
+import { authOptions } from "@/lib/server/auth";
+import { prisma } from "@/lib/server/prisma";
+import { getServerSession } from "next-auth";
+import { readFile } from "fs/promises";
 
 export const config = {
   api: {
@@ -17,36 +20,57 @@ export const POST = async (req: NextRequest) => {
   try {
     const { files } = await parseForm(nodeReq as any);
     const pdfFile = files?.file?.[0];
-
-    if (!pdfFile) {
-      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
-    }
+    if (!pdfFile) return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
 
     const fullText = await extractTextFromPDF(pdfFile.filepath);
+    const sensitiveItems = await handleGeminiResponse(fullText);
+    const pdfBytes = await redactSensitiveInfo(pdfFile.filepath, sensitiveItems);
 
-    const prompt = extractSensitiveInfoPrompt(fullText)
+    const session = await getServerSession(authOptions);
 
-    const response = geminiModel.generateContent(prompt)
-    const message = (await response).response.text()
+    if (session) {
 
-    console.log(message)
-    if (message.trim() !== noResumeMsg) {
+      if (!session?.user?.email) throw new Error("No session email");
 
-      const parsedArray = JSON.parse(message);
+      const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+      const fileBuffer = await readFile(pdfFile.filepath);
 
-      const pdfBytes = await redactSensitiveInfo(pdfFile.filepath, parsedArray)
+      if (!user) throw new Error("No user found");
 
-      return new NextResponse(pdfBytes, {
-        headers: {
-          "Content-Type": "application/pdf",
-          "Content-Disposition": `inline; filename="redacted.pdf`
+      const { originalUrl, redactedUrl } = await uploadToSupabase(user.id, pdfFile.originalFilename, fileBuffer, pdfBytes);
+
+      await prisma.historyRecords.create({
+        data: {
+          fileName: pdfFile.originalFilename ?? "unknown.pdf",
+          resumeUrl: originalUrl,
+          redactedResumeUrl: redactedUrl,
+          user: { connect: { id: user.id } }
         }
-      });
+      })
     } else {
-      return NextResponse.json({ message })
+      console.log("user is not signed in")
     }
-  } catch (error) {
-    console.error("Error extracting text from PDF:", error);
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+
+    return new NextResponse(pdfBytes, {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `inline; filename="redacted.pdf"`,
+      },
+    });
+  } catch (err: any) {
+    if (err.message === "NO_PERSONAL_INFO_FOUND") {
+      return NextResponse.json({ message: "No personal info found to redact." }, { status: 200 });
+    }
+
+    if (isGeminiRateLimitError(err)) {
+      return NextResponse.json({ error: "Quota reached. Try again after reset." }, { status: 429 });
+    }
+
+    if (isGeminiOverloadError(err)) {
+      return NextResponse.json({ error: "AI service overloaded. Try again soon." }, { status: 503 });
+    }
+
+    console.error("Error in POST:", err);
+    return NextResponse.json({ error: "Something went wrong." }, { status: 500 });
   }
 };

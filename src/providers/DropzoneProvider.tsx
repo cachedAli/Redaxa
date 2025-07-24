@@ -8,7 +8,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useLoadingStore } from "@/components/store/loadingStore";
 import { useUploadStore } from "@/components/store/uploadStore";
-import { useFetch } from "@/hooks/useFetch";
+import { useFetchApi } from "@/hooks/useFetchApi";
 
 export default function DropzoneProvider({
   children,
@@ -32,21 +32,24 @@ export default function DropzoneProvider({
       }))
     );
 
-  const setShowActionButtonsLoading = useLoadingStore(
-    (state) => state.setShowActionButtonsLoading
+  const setRedactResumeLoading = useLoadingStore(
+    (state) => state.setRedactResumeLoading
   );
 
   const handleUpload = async (formData: FormData) => {
-    setShowActionButtonsLoading(false);
+    setRedactResumeLoading(true);
     setScrollToSection(true);
-    const response = await useFetch("Post", "/api/redact-resume", formData, {
+    const response = await useFetchApi("Post", "/api/redact-resume", formData, {
       responseType: "blob",
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
 
-    if (!response) return;
+    if (!response) {
+      setRedactResumeLoading(false);
+      return;
+    }
 
     const contentType = response.headers["content-type"];
 
@@ -58,12 +61,12 @@ export default function DropzoneProvider({
 
       const pdfUrl = URL.createObjectURL(pdfBlob);
       setFile(pdfUrl);
-      setShowActionButtonsLoading(true);
+      setRedactResumeLoading(false);
     } else if (contentType === "application/json") {
       const text = await new Response(response.data).text();
       const parse = JSON.parse(text);
       setFile(parse.message);
-      setShowActionButtonsLoading(false);
+      setRedactResumeLoading(false);
     }
   };
 
@@ -79,14 +82,12 @@ export default function DropzoneProvider({
           const formData = new FormData();
           formData.append("file", newFile);
 
-          await handleUpload(formData);
-
           if (pathname !== "/upload") {
             router.push("/upload");
-            setScrollToSection(true);
-          } else {
-            setScrollToSection(true);
           }
+          setScrollToSection(true);
+
+          await handleUpload(formData);
         }
       }}
       accept={{

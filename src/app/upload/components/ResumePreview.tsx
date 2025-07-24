@@ -7,6 +7,12 @@ const ResumePreviewContent = dynamic(() => import("./ResumePreviewContent"), {
   ssr: false,
 });
 
-export default function ResumePreview() {
-  return <ResumePreviewContent />;
+export default function ResumePreview({
+  file,
+  isHistory = false,
+}: {
+  file: string | undefined;
+  isHistory?: boolean;
+}) {
+  return <ResumePreviewContent file={file} isHistory={isHistory} />;
 }

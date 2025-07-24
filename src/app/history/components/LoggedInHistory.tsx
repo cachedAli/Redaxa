@@ -5,10 +5,47 @@ import { FileText } from "lucide-react";
 import { Upload } from "@/components/ui/Upload";
 import SectionHeader from "@/components/ui/SectionHeader";
 import IconBox from "@/components/ui/IconBox";
+import { prisma } from "@/lib/server/prisma";
+import { Session } from "next-auth";
+import HistoryLayout from "./HistoryLayout";
 
-export default function LoggedInHistory() {
+export default async function LoggedInHistory({
+  session,
+}: {
+  session: Session;
+}) {
+  if (!session?.user?.email) return;
+
+  const user = await prisma.user.findUnique({
+    where: { email: session?.user?.email },
+    include: {
+      historyRecords: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+
+  let resumeHistory = [];
+
+  resumeHistory = user?.historyRecords || [];
+  console.log("hist", resumeHistory);
+
   return (
-    <main className="flex py-32 flex-col w-full items-center justify-center gap-8 bg-gradient-main">
+    <main className="flex py-32 px-12 flex-col w-full items-center justify-center gap-8 bg-gradient-main">
+      {resumeHistory && resumeHistory.length > 0 ? (
+        <HistoryLayout resumeHistory={resumeHistory} />
+      ) : (
+        <NoHistoryLayout />
+      )}
+    </main>
+  );
+}
+
+const NoHistoryLayout = () => {
+  return (
+    <>
       <IconBox icon={FileText} />
 
       <SectionHeader
@@ -18,6 +55,6 @@ export default function LoggedInHistory() {
       />
 
       <Upload animateOnView={false} history />
-    </main>
+    </>
   );
-}
+};

@@ -1,14 +1,14 @@
 import { useUploadStore } from "@/components/store/uploadStore";
 import { renderPdfPageToCanvas } from "./pdfToCanvas";
 
-export const imageToFile = async (pdfData: ArrayBuffer) => {
+export const imageToFile = async (pdfData: ArrayBuffer, addRedactedInName: boolean = false) => {
     const canvas = await renderPdfPageToCanvas(pdfData);
 
     const fileName = useUploadStore.getState().fileName;
     if (!fileName) throw new Error("fileName is not set");
 
     const baseName = fileName.replace(/\.[^/.]+$/, "");
-    const downloadName = `${baseName}_redacted.png`;
+    const downloadName = addRedactedInName ? fileName : `${baseName}_redacted.png`;
 
     const blob = await new Promise<Blob | null>((resolve) =>
         canvas.toBlob((blob) => resolve(blob), "image/png")

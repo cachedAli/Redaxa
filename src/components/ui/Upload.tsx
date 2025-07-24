@@ -6,6 +6,9 @@ import { FilePlus2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 import DropzoneProvider from "@/providers/DropzoneProvider";
+import { useLoadingStore } from "../store/loadingStore";
+import { useUploadStore } from "../store/uploadStore";
+import { useShallow } from "zustand/react/shallow";
 
 export const Upload = ({
   animateOnView = true,
@@ -14,6 +17,16 @@ export const Upload = ({
   animateOnView?: boolean;
   history?: boolean;
 }) => {
+  const redactResumeLoading = useLoadingStore(
+    (state) => state.redactResumeLoading
+  );
+  const { manualRedactMode, setManualRedactMode } = useUploadStore(
+    useShallow((state) => ({
+      setManualRedactMode: state.setManualRedactMode,
+      manualRedactMode: state.manualRedactMode,
+    }))
+  );
+
   return (
     <DropzoneProvider>
       {({ getRootProps, getInputProps, open }) => (
@@ -27,15 +40,21 @@ export const Upload = ({
           )}
         >
           <motion.button
-            onClick={open}
+            onClick={() => {
+              open();
+              if (manualRedactMode) setManualRedactMode(false);
+            }}
             initial={animateOnView ? { opacity: 0, y: 40 } : {}}
             whileInView={animateOnView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true }}
+            disabled={redactResumeLoading}
             type="button"
             className={clsx(
               "h-12 rounded-xl shadow-lg bg-indigo-500 hover:bg-blue-500 text-white flex items-center justify-center gap-2 cursor-pointer transition-colors duration-300",
-              history ? "w-64" : "w-60"
+              history ? "w-64" : "w-60",
+              redactResumeLoading &&
+                "disabled:pointer-events-none disabled:opacity-50"
             )}
           >
             <input {...getInputProps()} hidden />
