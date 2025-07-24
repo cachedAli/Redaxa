@@ -1,4 +1,4 @@
-import { handleGeminiResponse, isGeminiOverloadError, isGeminiRateLimitError, noResumeMsg, toNodeRequest, uploadToSupabase } from "@/lib/server/utils";
+import { handleGeminiResponse, isGeminiOverloadError, isGeminiRateLimitError, toNodeRequest, uploadToSupabase } from "@/lib/server/utils";
 import { redactSensitiveInfo } from "@/lib/server/redactSensitiveInfo";
 import { extractTextFromPDF } from "@/lib/server/pdfToText";
 import { NextRequest, NextResponse } from "next/server";

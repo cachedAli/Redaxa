@@ -12,11 +12,12 @@ import { convertPdfToImageAndDownload } from "@/lib/client/pdfToImg";
 import { useUploadStore } from "@/components/store/uploadStore";
 import { uploadToUploadThing } from "@/lib/client/uploadFiles";
 import { imageToFile } from "@/lib/client/imgToFile";
+import { HistoryRecords } from "@/types/historyTypes";
 
 export default function HistoryLayout({
   resumeHistory,
 }: {
-  resumeHistory: any[];
+  resumeHistory: HistoryRecords;
 }) {
   const [unblurId, setUnblurId] = useState("");
 
@@ -36,7 +37,7 @@ export default function HistoryLayout({
           "max-sm:grid-cols-1"
         )}
       >
-        {resumeHistory.map((item) => (
+        {resumeHistory?.map((item) => (
           <div
             key={item.id}
             className={clsx(

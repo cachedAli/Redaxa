@@ -8,7 +8,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { useLoadingStore } from "@/components/store/loadingStore";
 import { useUploadStore } from "@/components/store/uploadStore";
-import { useFetchApi } from "@/hooks/useFetchApi";
+import { fetchApi } from "@/lib/client/fetchApi";
 
 export default function DropzoneProvider({
   children,
@@ -39,7 +39,7 @@ export default function DropzoneProvider({
   const handleUpload = async (formData: FormData) => {
     setRedactResumeLoading(true);
     setScrollToSection(true);
-    const response = await useFetchApi("Post", "/api/redact-resume", formData, {
+    const response = await fetchApi("Post", "/api/redact-resume", formData, {
       responseType: "blob",
       headers: {
         "Content-Type": "multipart/form-data",

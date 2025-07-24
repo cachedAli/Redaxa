@@ -17,7 +17,7 @@ export async function renderPdfPageToCanvas(pdfData: ArrayBuffer) {
     canvas.width = viewport.width;
     canvas.height = viewport.height;
 
-    // @ts-ignore
+    // @ts-expect-error
     await page.render({ canvasContext: context, viewport }).promise;
 
     return canvas;

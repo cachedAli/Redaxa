@@ -8,6 +8,7 @@ import IconBox from "@/components/ui/IconBox";
 import { prisma } from "@/lib/server/prisma";
 import { Session } from "next-auth";
 import HistoryLayout from "./HistoryLayout";
+import { HistoryRecords } from "@/types/historyTypes";
 
 export default async function LoggedInHistory({
   session,
@@ -27,7 +28,7 @@ export default async function LoggedInHistory({
     },
   });
 
-  let resumeHistory = [];
+  let resumeHistory:HistoryRecords = [];
 
   resumeHistory = user?.historyRecords || [];
   console.log("hist", resumeHistory);

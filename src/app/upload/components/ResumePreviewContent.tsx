@@ -2,7 +2,6 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useShallow } from "zustand/react/shallow";
 
 import { useUploadStore } from "@/components/store/uploadStore";
 import Spinner from "@/components/ui/Spinner";
@@ -39,7 +38,7 @@ export default function ResumePreviewContent({
     updateWidth();
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
-  }, []);
+  }, [isHistory]);
 
   return (
     <div

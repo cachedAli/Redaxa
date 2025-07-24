@@ -4,7 +4,7 @@ import fs from "fs/promises";
 
 
 const loadWorker = async () => {
-//   @ts-ignore
+
   await import("pdfjs-dist/build/pdf.worker.min.mjs");
 };
 
@@ -21,7 +21,7 @@ export const extractTextFromPDF = async (filePath: string): Promise<string> => {
   for (let i = 1; i <= doc.numPages; i++) {
     const page = await doc.getPage(i);
 
-    
+
     const textContent = await page.getTextContent();
 
     const lines: Record<number, { x: number; str: string }[]> = {};

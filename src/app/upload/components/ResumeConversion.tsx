@@ -15,7 +15,7 @@ import { useUploadStore } from "@/components/store/uploadStore";
 import { uploadToUploadThing } from "@/lib/client/uploadFiles";
 import { urlToArrayBuffer } from "@/lib/client/utils";
 import { imageToFile } from "@/lib/client/imgToFile";
-import { useFetchApi } from "@/hooks/useFetchApi";
+import { fetchApi } from "@/lib/client/fetchApi";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/Spinner";
 import ResumePreview from "./ResumePreview";
@@ -46,7 +46,7 @@ export default function ResumeConversion() {
 
       setScrollToSection(false);
     }
-  }, [scrollToSection]);
+  }, [scrollToSection, setScrollToSection]);
 
   const redactResumeLoading = useLoadingStore(
     (state) => state.redactResumeLoading
@@ -341,17 +341,12 @@ const RedactModeActionButtons = ({
     formData.append("file", redactedFile);
     formData.append("selectedText", selectedText);
     formData.append("fileName", fileName);
-    const res = await useFetchApi(
-      "Post",
-      "/api/redact-selected-text",
-      formData,
-      {
-        responseType: "blob",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const res = await fetchApi("Post", "/api/redact-selected-text", formData, {
+      responseType: "blob",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     if (res) {
       setRedactSelectedTextLoading(false);

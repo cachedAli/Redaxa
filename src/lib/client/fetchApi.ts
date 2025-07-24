@@ -4,7 +4,7 @@ import { useUploadStore } from "@/components/store/uploadStore";
 import axios, { AxiosResponse } from "axios"
 
 
-export const useFetchApi = async (method: "Post" | "get" | "put" | "delete", url: string, data?: any, config?: any) => {
+export const fetchApi = async (method: "Post" | "get" | "put" | "delete", url: string, data?: any, config?: any) => {
 
     try {
 

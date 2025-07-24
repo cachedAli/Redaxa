@@ -6,7 +6,6 @@ import fs from "fs/promises"
 
 
 const loadWorker = async () => {
-    //   @ts-ignore
     await import("pdfjs-dist/build/pdf.worker.min.mjs");
 };
 
