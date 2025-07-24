@@ -39,7 +39,7 @@ export default function DropzoneProvider({
   const handleUpload = async (formData: FormData) => {
     setRedactResumeLoading(true);
     setScrollToSection(true);
-    const response = await fetchApi("Post", "/api/redact-resume", formData, {
+    const response = await fetchApi("post", "/api/redact-resume", formData, {
       responseType: "blob",
       headers: {
         "Content-Type": "multipart/form-data",

@@ -5,7 +5,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import { useUploadStore } from "@/components/store/uploadStore";
 
 
-export const fetchApi = async (method: "Post" | "get" | "put" | "delete", url: string, data?: unknown, config?: AxiosRequestConfig) => {
+export const fetchApi = async (method: "post" | "get" | "put" | "delete", url: string, data?: unknown, config?: AxiosRequestConfig) => {
 
     try {
 

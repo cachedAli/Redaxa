@@ -6,7 +6,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useUploadStore } from "@/components/store/uploadStore";
 import Spinner from "@/components/ui/Spinner";
 import "react-pdf/dist/Page/TextLayer.css";
-import "../../globals.css";
+import "../../../globals.css";
 import clsx from "clsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(

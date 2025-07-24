@@ -342,7 +342,7 @@ const RedactModeActionButtons = ({
     formData.append("file", redactedFile);
     formData.append("selectedText", selectedText);
     formData.append("fileName", fileName);
-    const res = await fetchApi("Post", "/api/redact-selected-text", formData, {
+    const res = await fetchApi("post", "/api/redact-selected-text", formData, {
       responseType: "blob",
       headers: {
         "Content-Type": "multipart/form-data",

@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { CircleCheckBig, Download, Eye, EyeClosed, Link } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import ResumePreview from "@/app/upload/components/ResumePreview";
+import ResumePreview from "@/app/(root)/upload/components/ResumePreview";
 import { capitalizeFirstLetter, urlToArrayBuffer } from "@/lib/client/utils";
 import { convertPdfToImageAndDownload } from "@/lib/client/pdfToImg";
 import { useUploadStore } from "@/components/store/uploadStore";
