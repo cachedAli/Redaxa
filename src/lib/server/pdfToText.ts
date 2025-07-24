@@ -7,7 +7,36 @@ import { JSDOM } from "jsdom";
 
 const { window } = new JSDOM();
 globalThis.DOMMatrix = window.DOMMatrix;
+// @ts-expect-error: ImageData polyfill for Node.js
+globalThis.ImageData = class {
+  width: number;
+  height: number;
+  data: Uint8ClampedArray;
+  colorSpace = "srgb"; // Required by pdfjs
 
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+    this.data = new Uint8ClampedArray(width * height * 4);
+  }
+};
+
+// @ts-expect-error: Path2D polyfill for Node.js
+globalThis.Path2D = class {
+  constructor(_path?: string | Path2D) {
+  void _path; 
+}
+  addPath() { }
+  arc() { }
+  arcTo() { }
+  bezierCurveTo() { }
+  closePath() { }
+  ellipse() { }
+  lineTo() { }
+  moveTo() { }
+  quadraticCurveTo() { }
+  rect() { }
+};
 
 const loadWorker = async () => {
 
