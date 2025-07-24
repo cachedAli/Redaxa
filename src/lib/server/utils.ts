@@ -4,17 +4,19 @@ import { Readable } from "stream";
 import { geminiModel } from "./gemini";
 import { supabase } from "../client/supabaseClient";
 
-
 export const toNodeRequest = (req: NextRequest) => {
     const body = req.body;
-    if (!body) throw new Error("No body found in request");
+    if (!body) throw new Error("No body found");
 
-    const readableNodeStream = Readable.fromWeb(body as any)
-    return Object.assign(readableNodeStream, {
+    const nodeStream = Readable.fromWeb(
+        body as unknown as import("node:stream/web").ReadableStream<Uint8Array>
+    );
+
+    return Object.assign(nodeStream, {
         headers: Object.fromEntries(req.headers.entries()),
         method: req.method,
-        url: ""
-    })
+        url: "",
+    });
 }
 
 export const extractSensitiveInfoPrompt = (text: string) => {
@@ -95,15 +97,22 @@ export const handleGeminiResponse = async (text: string) => {
 
     return JSON.parse(message);
 };
-
-export const isGeminiRateLimitError = (err: any) => {
-    const message = err?.message?.toLowerCase() || "";
-    return message.includes("quota") || message.includes("rate limit") || message.includes("exceeded");
+export const isGeminiRateLimitError = (err: unknown): boolean => {
+    if (typeof err === "object" && err !== null && "message" in err) {
+        const message = String((err as { message?: unknown }).message).toLowerCase();
+        return message.includes("quota") || message.includes("rate limit") || message.includes("exceeded");
+    }
+    return false;
 };
 
-export const isGeminiOverloadError = (err: any) => {
-    const message = err?.message?.toLowerCase() || "";
-    return message.includes("unavailable") || message.includes("overload") || message.includes("too many requests");
+export const isGeminiOverloadError = (err: unknown): boolean => {
+    if (typeof err === "object" && err !== null && "message" in err) {
+        const message = String((err as { message?: unknown }).message).toLowerCase();
+        return message.includes("unavailable") ||
+            message.includes("overload") ||
+            message.includes("too many requests");
+    }
+    return false;
 };
 
 

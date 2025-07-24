@@ -31,8 +31,7 @@ export default async function LoggedInHistory({
   let resumeHistory:HistoryRecords = [];
 
   resumeHistory = user?.historyRecords || [];
-  console.log("hist", resumeHistory);
-
+  
   return (
     <main className="flex py-32 px-12 flex-col w-full items-center justify-center gap-8 bg-gradient-main">
       {resumeHistory && resumeHistory.length > 0 ? (

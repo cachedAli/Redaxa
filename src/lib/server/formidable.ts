@@ -8,7 +8,7 @@ export function parseForm(req: IncomingMessage): Promise<{ fields: formidable.Fi
     });
 
     return new Promise((resolve, reject) => {
-        form.parse(req, (err: any, fields: formidable.Fields, files: formidable.Files) => {
+        form.parse(req, (err: unknown, fields: formidable.Fields, files: formidable.Files) => {
             if (err) return reject(err);
             resolve({ fields, files });
         });

@@ -1,12 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  swcMinify: false,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    turbo: false, // Disable Turbopack
+  },
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*",
+        hostname: "**",
       },
     ],
   },

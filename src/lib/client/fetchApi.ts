@@ -1,16 +1,15 @@
 "use client"
 
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
+
 import { useUploadStore } from "@/components/store/uploadStore";
-import axios, { AxiosResponse } from "axios"
 
 
-export const fetchApi = async (method: "Post" | "get" | "put" | "delete", url: string, data?: any, config?: any) => {
+export const fetchApi = async (method: "Post" | "get" | "put" | "delete", url: string, data?: unknown, config?: AxiosRequestConfig) => {
 
     try {
 
-        let response: AxiosResponse
-
-        response = await axios({
+        const response: AxiosResponse = await axios({
             url,
             method,
             data,
@@ -18,15 +17,17 @@ export const fetchApi = async (method: "Post" | "get" | "put" | "delete", url: s
         })
 
         return response;
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const axiosError = error as AxiosError;
         console.log(error)
-        if (error.response?.data instanceof Blob) {
+        if (axiosError.response?.data instanceof Blob) {
             try {
-                const text = await error.response.data.text();
+                const text = await axiosError.response.data.text();
                 const parsed = JSON.parse(text);
                 const friendlyMessage = parsed.error || parsed.message || "Something went wrong.";
                 useUploadStore.getState().setFile(friendlyMessage);
             } catch (parseError) {
+                console.log(parseError)
                 useUploadStore.getState().setFile("Unexpected server response.");
             }
         } else {

@@ -1,13 +1,14 @@
 import React from "react";
 import clsx from "clsx";
 
+import { Feature } from "@/types/featureTypes";
 import { motion } from "framer-motion";
 
 export default function FeaturesCard({
   feature,
   variant = "free",
 }: {
-  feature: any;
+  feature: Feature;
   variant?: "free" | "loggedIn";
 }) {
   const Icon = feature.icon;

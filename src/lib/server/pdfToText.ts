@@ -1,6 +1,12 @@
+
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import { TextItem } from "react-pdf";
 import "@ungap/with-resolvers";
 import fs from "fs/promises";
+import { JSDOM } from "jsdom";
+
+const { window } = new JSDOM();
+globalThis.DOMMatrix = window.DOMMatrix;
 
 
 const loadWorker = async () => {
@@ -26,12 +32,14 @@ export const extractTextFromPDF = async (filePath: string): Promise<string> => {
 
     const lines: Record<number, { x: number; str: string }[]> = {};
 
-    textContent.items.forEach((item: any) => {
-      const y = Math.round(item.transform[5]);
-      const x = item.transform[4];
-      if (!lines[y]) lines[y] = [];
-      lines[y].push({ x, str: item.str });
-
+    textContent.items.forEach((item) => {
+      if ("str" in item && "transform" in item) {
+        const typedItem = item as TextItem;
+        const y = Math.round(typedItem.transform[5]);
+        const x = typedItem.transform[4];
+        if (!lines[y]) lines[y] = [];
+        lines[y].push({ x, str: typedItem.str });
+      }
     });
 
     const sortedY = Object.keys(lines)

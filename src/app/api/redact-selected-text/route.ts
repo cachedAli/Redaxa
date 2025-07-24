@@ -1,18 +1,19 @@
-import { supabase } from "@/lib/client/supabaseClient";
-import { authOptions } from "@/lib/server/auth";
-import { parseForm } from "@/lib/server/formidable";
-import { prisma } from "@/lib/server/prisma";
 import { redactSensitiveInfo } from "@/lib/server/redactSensitiveInfo";
-import { toNodeRequest } from "@/lib/server/utils";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/client/supabaseClient";
+import { parseForm } from "@/lib/server/formidable";
+import { toNodeRequest } from "@/lib/server/utils";
+import { authOptions } from "@/lib/server/auth";
+import { prisma } from "@/lib/server/prisma";
+import { getServerSession } from "next-auth";
+import { IncomingMessage } from "http";
 
 
 export const POST = async (req: NextRequest) => {
     const nodeReq = toNodeRequest(req);
 
     try {
-        const { files, fields } = await parseForm(nodeReq as any);
+        const { files, fields } = await parseForm(nodeReq as IncomingMessage);
         const pdfFile = files?.file?.[0];
 
         const selectedText = fields?.selectedText?.[0];

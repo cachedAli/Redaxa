@@ -32,7 +32,8 @@ export default function AuthForm({
         isHistory && " flex items-center justify-center"
       )}
       action={async () => {
-        setGoogleLoading(true), setLogoutLoading(true);
+        setGoogleLoading(true);
+        setLogoutLoading(true);
 
         if (!isHistory && session) await signOut();
         else await signIn("google");

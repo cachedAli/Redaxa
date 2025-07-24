@@ -12,7 +12,7 @@ import { convertPdfToImageAndDownload } from "@/lib/client/pdfToImg";
 import { useUploadStore } from "@/components/store/uploadStore";
 import { uploadToUploadThing } from "@/lib/client/uploadFiles";
 import { imageToFile } from "@/lib/client/imgToFile";
-import { HistoryRecords } from "@/types/historyTypes";
+import { HistoryRecord, HistoryRecords } from "@/types/historyTypes";
 
 export default function HistoryLayout({
   resumeHistory,
@@ -20,8 +20,6 @@ export default function HistoryLayout({
   resumeHistory: HistoryRecords;
 }) {
   const [unblurId, setUnblurId] = useState("");
-
-  console.log(unblurId);
 
   return (
     <div className="text-white flex flex-col w-full items-center gap-8">
@@ -75,7 +73,7 @@ const ActionButtons = ({
   setUnblurId,
   unblurId,
 }: {
-  item: any;
+  item: HistoryRecord;
   setUnblurId: React.Dispatch<React.SetStateAction<string>>;
   unblurId: string;
 }) => {
@@ -96,6 +94,8 @@ const ActionButtons = ({
 
   // Download File
   const downloadImageHandler = async () => {
+    if (!item) return;
+
     if (!item.redactedResumeUrl) {
       console.error("No file to download");
       return;
@@ -154,6 +154,7 @@ const ActionButtons = ({
           textarea.value = imgUrl;
           document.body.appendChild(textarea);
           textarea.select();
+          console.error("Error converting file URL to ArrayBuffer:", err);
           try {
             document.execCommand("copy");
             setLinkCopied(true);
@@ -213,7 +214,7 @@ const ActionButtons = ({
   );
 };
 
-const FileInfo = ({ item }: { item: any }) => {
+const FileInfo = ({ item }: { item: HistoryRecord }) => {
   return (
     <div className="flex flex-col gap-1">
       <h2 className="text-center font-semibold">

@@ -8,10 +8,8 @@ export const ourFileRouter = {
             maxFileSize: "8MB",
             maxFileCount: 1
         }
-    }).onUploadComplete(async ({ file }) => {
+    }).onUploadComplete(async () => {
         console.log("Upload complete");
-        console.log("URL:", file.url);
-
     })
 } satisfies FileRouter;
 

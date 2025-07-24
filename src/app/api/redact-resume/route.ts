@@ -7,6 +7,7 @@ import { authOptions } from "@/lib/server/auth";
 import { prisma } from "@/lib/server/prisma";
 import { getServerSession } from "next-auth";
 import { readFile } from "fs/promises";
+import { IncomingMessage } from "http";
 
 export const config = {
   api: {
@@ -18,7 +19,7 @@ export const POST = async (req: NextRequest) => {
   const nodeReq = toNodeRequest(req);
 
   try {
-    const { files } = await parseForm(nodeReq as any);
+    const { files } = await parseForm(nodeReq as IncomingMessage);
     const pdfFile = files?.file?.[0];
     if (!pdfFile) return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
 
@@ -57,8 +58,8 @@ export const POST = async (req: NextRequest) => {
         "Content-Disposition": `inline; filename="redacted.pdf"`,
       },
     });
-  } catch (err: any) {
-    if (err.message === "NO_PERSONAL_INFO_FOUND") {
+  } catch (err: unknown) {
+    if (err instanceof Error && err.message === "NO_PERSONAL_INFO_FOUND") {
       return NextResponse.json({ message: "No personal info found to redact." }, { status: 200 });
     }
 

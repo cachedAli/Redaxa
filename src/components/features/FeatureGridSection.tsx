@@ -2,6 +2,8 @@ import React from "react";
 import clsx from "clsx";
 
 import { LockKeyhole, Rocket } from "lucide-react";
+
+import { Feature } from "@/types/featureTypes";
 import FeaturesCard from "./FeaturesCard";
 
 export default function FeatureGridSection({
@@ -9,7 +11,7 @@ export default function FeatureGridSection({
   variant = "free",
 }: {
   title?: string;
-  features: any[];
+  features: Feature[];
   variant: "free" | "loggedIn";
 }) {
   return (

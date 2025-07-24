@@ -1,6 +1,6 @@
 "use client"
 
-import * as pdfjsLib from "pdfjs-dist";
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
@@ -17,7 +17,7 @@ export async function renderPdfPageToCanvas(pdfData: ArrayBuffer) {
     canvas.width = viewport.width;
     canvas.height = viewport.height;
 
-    // @ts-expect-error
+    // @ts-expect-error: canvasContext type mismatch in pdfjs render method
     await page.render({ canvasContext: context, viewport }).promise;
 
     return canvas;

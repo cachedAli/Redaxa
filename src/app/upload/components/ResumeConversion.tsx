@@ -128,6 +128,7 @@ const ActionButtons = ({ file }: { file: string | undefined }) => {
           textarea.value = imgUrl;
           document.body.appendChild(textarea);
           textarea.select();
+          console.error(err)
           try {
             document.execCommand("copy");
             setLinkCopied(true);
@@ -255,7 +256,7 @@ const RedactMode = () => {
       {!manualRedactMode ? (
         <>
           <p className="text-sm text-gray-600 text-center max-sm:text-xs">
-            Didn't catch everything? You can manually redact any remaining
+            Didn&apos;t catch everything? You can manually redact any remaining
             sensitive text below.
           </p>
 
@@ -282,7 +283,7 @@ const RedactMode = () => {
       ) : (
         <>
           <p className="text-sm text-gray-600 text-center max-sm:text-xs">
-            Highlight the text you'd like to redact. You can select across
+            Highlight the text you&apos;d like to redact. You can select across
             multiple lines if needed.
           </p>
           <RedactModeActionButtons setManualRedactMode={setManualRedactMode} />

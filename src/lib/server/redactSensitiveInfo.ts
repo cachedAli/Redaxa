@@ -2,7 +2,13 @@
 import { PDFDocument, rgb } from "@cantoo/pdf-lib";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { cleanSocialLinks } from "./utils";
+import { TextItem } from "react-pdf";
+import { JSDOM } from "jsdom";
 import fs from "fs/promises"
+
+
+const { window } = new JSDOM();
+globalThis.DOMMatrix = window.DOMMatrix;
 
 
 const loadWorker = async () => {
@@ -36,12 +42,13 @@ export const redactSensitiveInfo = async (filePath: string, array?: string[], se
         const textContent = await page.getTextContent();
 
 
-        const linesMap = new Map<number, any[]>();
-        (await textContent).items.forEach((item: any) => {
-            if ("transform" in item && Array.isArray(item.transform)) {
-                const y = Math.round(item.transform[5]);
+        const linesMap = new Map<number, TextItem[]>();
+        textContent.items.forEach((item) => {
+            if ("transform" in item && Array.isArray(item.transform) && "str" in item) {
+                const typedItem = item as TextItem;
+                const y = Math.round(typedItem.transform[5]);
                 if (!linesMap.has(y)) linesMap.set(y, []);
-                linesMap.get(y)?.push(item);
+                linesMap.get(y)?.push(typedItem);
             }
         });
 
@@ -87,7 +94,7 @@ export const redactSensitiveInfo = async (filePath: string, array?: string[], se
             }
         } else {
 
-            for (const [y, items] of linesMap.entries()) {
+            for (const [, items] of linesMap.entries()) {
                 const cleanedSelected = cleanSocialLinks(selectedText.replace(/\s+/g, "").toLowerCase());
 
                 // Build cleaned versions of each item's text
@@ -116,12 +123,11 @@ export const redactSensitiveInfo = async (filePath: string, array?: string[], se
                     }
 
                     // Now step backward to get starting item index
-                    let endIndex = startIndex;
+                    const endIndex = startIndex;
                     let reversedText = "";
                     for (let i = startIndex; i >= 0; i--) {
                         reversedText = cleanedItems[i].text + reversedText;
                         if (reversedText === cleanedSelected) {
-                            matchIndex; // found exact block
                             for (let j = i; j <= endIndex; j++) {
                                 const item = cleanedItems[j].original;
                                 pdfLibPage.drawRectangle({
