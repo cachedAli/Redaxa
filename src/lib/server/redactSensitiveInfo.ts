@@ -1,4 +1,5 @@
 
+import "@/lib/pdf-polyfills";
 import { PDFDocument, rgb } from "@cantoo/pdf-lib";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { cleanSocialLinks } from "./utils";

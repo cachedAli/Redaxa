@@ -1,4 +1,5 @@
 
+import "@/lib/pdf-polyfills";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { TextItem } from "react-pdf";
 import "@ungap/with-resolvers";
