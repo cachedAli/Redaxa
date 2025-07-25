@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Redaxa
 
-## Getting Started
+Redaxa is a privacy-first resume redaction tool. Instantly redact sensitive details from your PDF resume and share a clean version with confidence. No signup required.
 
-First, run the development server:
+## ✨ Features
+
+### Free Features
+- ⚡ Instant PDF redaction
+- 📄 Download redacted resume
+- 🔗 Shareable secure link
+- 🎯 Preserves original layout
+
+### Pro Features (with account)
+- 🕒 Redaction history
+- 🖊️ Manual redaction control
+- 💡 Smart field suggestions
+- ☁️ Cloud access to redacted files
+
+## 🔐 Why Redaxa?
+
+Sharing your resume shouldn't mean giving up your privacy. Redaxa helps you:
+- Protect sensitive info like email, phone, address
+- Avoid identity theft
+- Control what you share and with whom
+
+## 🛠 Tech Stack
+
+- **Frontend**: Next.js 15, Tailwind CSS, ShadCN UI
+- **Backend**: Next.js API routes, PDF.js, Prisma
+- **Auth**: NextAuth.js
+- **Storage**: UploadThing, Supabase
+- **Deployment**: Vercel (with Edge Functions)
+- **AI Integration**: Gemini API (used for redaction)
+
+## 📸 Preview
+
+![Redaxa Screenshot](<img width="1878" height="996" alt="Screenshot 2025-07-25 at 12-39-33 Redaxa" src="https://github.com/user-attachments/assets/78f2e702-1529-4339-a50c-ba0f4e6f8815" />
+)
+
+## 🚀 Getting Started (Dev Setup)
 
 ```bash
+git clone https://github.com/cachedali/redaxa.git
+cd redaxa
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
