@@ -1,6 +1,5 @@
 
-import "@/lib/pdf-polyfills";
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import * as pdfjsLib from "pdfjs-legacy/build/pdf";
 import { TextItem } from "react-pdf";
 import "@ungap/with-resolvers";
 import fs from "fs/promises";
@@ -25,8 +24,8 @@ globalThis.ImageData = class {
 // @ts-expect-error: Path2D polyfill for Node.js
 globalThis.Path2D = class {
   constructor(_path?: string | Path2D) {
-  void _path; 
-}
+    void _path;
+  }
   addPath() { }
   arc() { }
   arcTo() { }
@@ -41,7 +40,7 @@ globalThis.Path2D = class {
 
 const loadWorker = async () => {
 
-  await import("pdfjs-dist/build/pdf.worker.min.mjs");
+  await import("pdfjs-legacy/build/pdf.worker.js");
 };
 
 export const extractTextFromPDF = async (filePath: string): Promise<string> => {

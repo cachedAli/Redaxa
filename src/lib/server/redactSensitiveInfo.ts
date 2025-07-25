@@ -1,7 +1,5 @@
-
-import "@/lib/pdf-polyfills";
 import { PDFDocument, rgb } from "@cantoo/pdf-lib";
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import * as pdfjsLib from "pdfjs-legacy/build/pdf";
 import { cleanSocialLinks } from "./utils";
 import { TextItem } from "react-pdf";
 import { JSDOM } from "jsdom";
@@ -43,7 +41,7 @@ globalThis.Path2D = class {
 
 
 const loadWorker = async () => {
-    await import("pdfjs-dist/build/pdf.worker.min.mjs");
+    await import("pdfjs-legacy/build/pdf.worker.js");
 };
 
 export const redactSensitiveInfo = async (filePath: string, array?: string[], selectedText?: string): Promise<Uint8Array> => {
