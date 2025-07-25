@@ -1,4 +1,6 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Provider from "@/providers/SessionProviders";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -30,6 +32,8 @@ export default function RootLayout({
       >
         <Provider>
           <main>{children}</main>
+          <SpeedInsights />
+          <Analytics />
         </Provider>
       </body>
     </html>
