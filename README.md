@@ -34,8 +34,7 @@ Sharing your resume shouldn't mean giving up your privacy. Redaxa helps you:
 
 ## 📸 Preview
 
-![Redaxa Screenshot](<img width="1878" height="996" alt="Screenshot 2025-07-25 at 12-39-33 Redaxa" src="https://github.com/user-attachments/assets/78f2e702-1529-4339-a50c-ba0f4e6f8815" />
-)
+![Redaxa Screenshot](https://github.com/user-attachments/assets/78f2e702-1529-4339-a50c-ba0f4e6f8815)
 
 ## 🚀 Getting Started (Dev Setup)
 
